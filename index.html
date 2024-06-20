@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gemini Chat</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+  <script>
+    async function askQuestion() {
+      const questionInput = document.getElementById('questionInput');
+      const answerDiv = document.getElementById('answer');
+
+      const question = questionInput.value;
+      questionInput.value = ''; // Clear the input field
+
+      answerDiv.textContent = 'Loading...'; // Show loading message
+
+      try {
+        const response = await fetch(`/ask?ask=${encodeURIComponent(question)}`);
+        const data = await response.json();
+
+        if (data.error) {
+          answerDiv.textContent = data.error;
+        } else {
+          answerDiv.textContent = data.answer;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        answerDiv.textContent = 'An error occurred. Please try again.';
+      }
+    }
+  </script>
+</head>
+<body>
+  <input type="text" id="questionInput" placeholder="আপনার প্রশ্ন লিখুন">
+  <button onclick="askQuestion()">জিজ্ঞাসা করুন</button>
+  <div id="answer"></div>
+</body>
+</html>
